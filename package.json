@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:pages": "tsc && vite build --base /PBRE/",
+    "build:pages": "tsc && vite build --base /",
     "desktop": "node electron/dev.mjs",
     "desktop:build": "ELECTRON=1 tsc && ELECTRON=1 vite build && electron-builder",
     "desktop:build:mac": "ELECTRON=1 tsc && ELECTRON=1 vite build && electron-builder --mac",
@@ -90,7 +90,10 @@
       }
     ],
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "category": "public.app-category.utilities",
       "identity": null,
       "hardenedRuntime": true,
@@ -102,12 +105,23 @@
       }
     },
     "win": {
-      "target": [{ "target": "zip", "arch": ["x64", "arm64"] }]
+      "target": [
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
     },
     "linux": {
       "target": [
-        { "target": "AppImage", "arch": ["x64", "arm64"] },
-        { "target": "tar.gz", "arch": ["x64", "arm64"] }
+        {
+          "target": "AppImage",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "tar.gz",
+          "arch": ["x64", "arm64"]
+        }
       ],
       "category": "Utility"
     }

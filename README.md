@@ -4,7 +4,7 @@
 
 **Puffing Bluetooth Re-Engineered** is an open source controller for **Pax 3** vaporizers. It talks to the device over Bluetooth from a web browser or a desktop app — no official Pax app required.
 
-[**Open the live demo**](https://josephburt.github.io/PBRE/) · [Original pax-romana project](https://github.com/evertonstz/pax-romana)
+[**Open the live demo**](https://pbre.burtlabs.org/) · [Original pax-romana project](https://github.com/evertonstz/pax-romana)
 
 Use Chrome or Edge for the demo. Web Bluetooth does not work in Safari or Firefox. You will need the serial number printed on the back of the Pax.
 
@@ -22,7 +22,7 @@ It runs in two ways:
 
 | | How you use it |
 |---|---|
-| **Web app** | Open the [live demo](https://josephburt.github.io/PBRE/) or run it locally |
+| **Web app** | Open the [live demo](https://pbre.burtlabs.org/) or run it locally |
 | **Desktop app** | Standalone Mac, Windows, and Linux builds (Electron + Chromium) |
 
 Writes (temperature, lights, vibration) work on macOS. Other operating systems can usually read device state; changing settings may be limited by the OS Bluetooth stack.
@@ -69,7 +69,7 @@ Builds land in `release/`. Unsigned Mac builds may need **Right-click → Open**
 | `pnpm test` | Unit tests |
 | `pnpm run lint` | ESLint + Prettier |
 | `pnpm run build` | Production web build |
-| `pnpm run build:pages` | Production build for GitHub Pages (`/PBRE/`) |
+| `pnpm run build:pages` | Production build for GitHub Pages |
 | `pnpm desktop` | Standalone Electron app |
 | `pnpm desktop:build` | Package a downloadable app for this OS |
 
