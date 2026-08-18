@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" rx="220" fill="#111111"/>
+  <g transform="translate(212 150) scale(25)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+    <path d="M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5"/>
+  </g>
+  <text
+    x="512"
+    y="870"
+    text-anchor="middle"
+    font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-weight="800"
+    font-size="150"
+    letter-spacing="10"
+    fill="#ffffff"
+  >PBRE</text>
+</svg>
