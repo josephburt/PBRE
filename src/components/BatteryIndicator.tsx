@@ -11,31 +11,38 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export function BatteryIndicator() {
   const { state } = usePaxContext();
-  const tooltipContent = state.batteryPercentage
-    ? `${state.batteryPercentage}%`
-    : 'Disconnected';
+  const percentage = state.batteryPercentage;
+  const hasReading = percentage !== undefined;
+  const tooltipContent = hasReading
+    ? `${Math.round(percentage)}%`
+    : 'No reading';
 
   const getIcon = () => {
-    if (!state.batteryPercentage) {
+    if (!hasReading) {
       return <Unplug />;
     }
-    if (state.batteryPercentage < 25) {
+    if (percentage < 25) {
       return <Battery />;
     }
-    if (state.batteryPercentage < 50) {
+    if (percentage < 50) {
       return <BatteryLow />;
     }
-    if (state.batteryPercentage < 75) {
+    if (percentage < 75) {
       return <BatteryMedium />;
     }
-    if (state.batteryPercentage >= 75) {
-      return <BatteryFull />;
-    }
+    return <BatteryFull />;
   };
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{getIcon()}</TooltipTrigger>
+      <TooltipTrigger asChild>
+        <div className="flex items-center gap-1.5">
+          {getIcon()}
+          <span className="min-w-[2.5ch] text-sm font-medium tabular-nums">
+            {hasReading ? `${Math.round(percentage)}%` : '—'}
+          </span>
+        </div>
+      </TooltipTrigger>
       <TooltipContent>{tooltipContent}</TooltipContent>
     </Tooltip>
   );

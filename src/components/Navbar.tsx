@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ThemeDropdownButton } from '.';
 import { BatteryIndicator } from './BatteryIndicator';
 import DevicesModal from './DevicesModal';
+import TemperatureUnitToggle from './TemperatureUnitToggle';
 import { Button } from './ui/button';
 
 const Navbar = () => {
@@ -25,10 +26,10 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <Cloudy size={40} />
           <h1 className="select-none scroll-m-20 font-extrabold tracking-tight md:text-4xl">
-            Pax Romana
+            PBRE
           </h1>
         </div>
-        <div className="flex-grow bg-white"></div>
+        <div className="flex-grow"></div>
         <div className="flex gap-3">
           <Button
             variant={deviceStore.currentDevice ? 'secondary' : 'default'}
@@ -43,6 +44,7 @@ const Navbar = () => {
               'Devices'
             )}
           </Button>
+          <TemperatureUnitToggle />
           <ThemeDropdownButton />
         </div>
       </div>

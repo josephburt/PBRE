@@ -16,10 +16,7 @@ export class HeatingStateMessage implements MessageAbs {
 
     const heatingStateInt = packet.getUint8(1);
     const heatingState = getEnumKeyByEnumValue(HeatingStates, heatingStateInt);
-    if (heatingState === undefined) {
-      throw new Error(`Unknown Heating Message: ${heatingStateInt}`);
-    }
-    this.heatingState = heatingState;
+    this.heatingState = heatingState ?? (heatingStateInt as HeatingStates);
   }
 
   private validatePacket(packet: PaxDecryptedPacket) {
