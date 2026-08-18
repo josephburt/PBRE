@@ -52,7 +52,8 @@ const MainContent = () => {
       );
     }
 
-    if (!(isChrome || isChromium || isEdgeChromium)) {
+    const isElectronRuntime = /Electron/i.test(navigator.userAgent);
+    if (!(isChrome || isChromium || isEdgeChromium || isElectronRuntime)) {
       return (
         <div className="mx-auto place-content-center">
           <div className="flex justify-center">

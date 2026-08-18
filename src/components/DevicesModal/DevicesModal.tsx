@@ -53,7 +53,7 @@ const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
 
   return (
     <Modal
-      title={'Your Pax Romana devices'}
+      title={'Your devices'}
       open={open}
       onOpenChange={onOpenChange}
       footer={renderFooter()}

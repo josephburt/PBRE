@@ -13,32 +13,32 @@ export interface IThemePickerProps {
 export function ThemePicker(props: IThemePickerProps) {
   if (props.loading ?? !props.colorThemes) {
     return (
-      <div className="flex animate-pulse flex-row gap-2">
-        <div className="flex flex-col gap-1">
+      <div className="flex w-full animate-pulse flex-row justify-center gap-4">
+        <div className="flex flex-col items-center gap-1">
           <ThemeCircle className="bg-neutral-200 hover:cursor-default dark:bg-neutral-800" />
-          <div className="col-span-2 h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+          <div className="h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-center gap-1">
           <ThemeCircle className="bg-neutral-200 hover:cursor-default dark:bg-neutral-800" />
-          <div className="col-span-2 h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+          <div className="h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-center gap-1">
           <ThemeCircle className="bg-neutral-200 hover:cursor-default dark:bg-neutral-800" />
-          <div className="col-span-2 h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+          <div className="h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-center gap-1">
           <ThemeCircle className="bg-neutral-200 hover:cursor-default dark:bg-neutral-800" />
-          <div className="col-span-2 h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+          <div className="h-4 w-12 rounded bg-neutral-200 dark:bg-neutral-800"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex w-full flex-row flex-wrap justify-center gap-4">
       {props.colorThemes.map((theme, index) => {
         return (
-          <div key={index}>
+          <div key={index} className="flex flex-col items-center gap-1">
             <ThemeCircle
               style={{
                 backgroundImage: `linear-gradient(to bottom, 
@@ -52,7 +52,7 @@ export function ThemePicker(props: IThemePickerProps) {
               selected={index === props.selectedThemeIndex}
               onClick={() => props.onClick?.(theme.theme)}
             />
-            <p>{theme.name}</p>
+            <p className="text-center text-sm">{theme.name}</p>
           </div>
         );
       })}

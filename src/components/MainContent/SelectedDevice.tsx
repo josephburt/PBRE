@@ -1,4 +1,4 @@
-import { usePaxBluetoothServices } from '@/hooks';
+import { usePaxBluetoothServices, useTemperatureUnit } from '@/hooks';
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { post } from '@/pax/containers/api';
@@ -7,11 +7,20 @@ import {
   BrightnessMessage,
   ColorThemeMessage,
   HapticsMessage,
+  HeaterSetPointMessage,
   RequestStatusMessage,
 } from '@/pax/core/messages';
 import { Messages } from '@/pax/shared/enums';
 import { ColorTheme } from '@/pax/shared/types';
 import { usePaxContext } from '@/state/hooks';
+import {
+  DEVICE_TEMP_MAX_C,
+  DEVICE_TEMP_MIN_C,
+  clampDeviceTemperatureC,
+  convertFromCelsius,
+  convertToCelsius,
+  formatTemperature,
+} from '@/utils/temperature';
 import { isEqual } from 'lodash';
 import { useCallback, useEffect } from 'react';
 
@@ -28,8 +37,20 @@ interface SelectedDeviceProps {
   openDevicesModal: () => void;
 }
 
+const STATUS_ATTRIBUTES = [
+  Messages.ATTRIBUTE_HEATING_STATE,
+  Messages.ATTRIBUTE_ACTUAL_TEMP,
+  Messages.ATTRIBUTE_HEATER_SET_POINT,
+  Messages.ATTRIBUTE_CURRENT_TARGET_TEMP,
+  Messages.ATTRIBUTE_BATTERY,
+  Messages.ATTRIBUTE_COLOR_THEME,
+  Messages.ATTRIBUTE_BRIGHTNESS,
+  Messages.ATTRIBUTE_HAPTIC_MODE,
+];
+
 export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
   const { state, actions } = usePaxContext();
+  const { unit } = useTemperatureUnit();
   const bluetoothState = usePaxBluetoothServices(currentDevice);
 
   const messagesConsumer = useCallback(() => {
@@ -78,9 +99,6 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
       bluetoothState.connected &&
       !bluetoothState.eventListener.isListenerAdded
     ) {
-      // add event listener to consume notifications
-      // this is needed because new info to read will only
-      // be broadcasted once a new Notification is consumed
       void bluetoothState.eventListener.startListening(messagesConsumer);
     }
   }, [bluetoothState, messagesConsumer]);
@@ -91,6 +109,20 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
     }
   }, [actions, bluetoothState.connected]);
 
+  useEffect(() => {
+    if (!bluetoothState.connected) {
+      return;
+    }
+
+    const toPost = post(
+      RequestStatusMessage.createWithMessage(STATUS_ATTRIBUTES),
+      currentDevice,
+    );
+    void bluetoothState.writeToMainService(toPost.packet);
+    // Request once per successful connection, not on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bluetoothState.connected, currentDevice.serial]);
+
   if (!bluetoothState.connected) {
     return (
       <div className="mx-3 flex flex-grow justify-center">
@@ -100,74 +132,103 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
   }
 
   return (
-    <div className="mx-auto flex flex-col gap-6 self-center">
+    <div className="mx-auto flex w-full max-w-sm flex-col gap-6 self-center">
       <TemperatureProgress
         connected={bluetoothState.connected}
         heaterSetPointTemperature={state.heaterSetPointTemperature}
         actualTemperature={state.actualTemperature}
-        unit={'C'}
+        unit={unit}
       />
-      <Slider
-        disabled={!bluetoothState.connected && !state.brightness}
-        max={1}
-        step={0.1}
-        value={state.brightness ? [state.brightness] : [0]}
-        onValueChange={value => {
-          actions.setBrightness(value[0]);
-        }}
-        onValueCommit={value => {
-          const toPost = post(
-            BrightnessMessage.createWithBrightness(value[0]),
-            currentDevice,
-          );
-          void bluetoothState.writeToMainService(toPost.packet);
-        }}
-      />
-      <Slider
-        disabled={!bluetoothState.connected && !state.haptics}
-        max={1}
-        step={0.1}
-        value={state.haptics ? [state.haptics] : [0]}
-        onValueChange={value => {
-          actions.setHaptics(value[0]);
-        }}
-        onValueCommit={value => {
-          const toPost = post(
-            HapticsMessage.createWithHaptics(value[0]),
-            currentDevice,
-          );
-          void bluetoothState.writeToMainService(toPost.packet);
-        }}
-      />
-
-      <HeaterStatus heaterStatus={state.heatingSate} />
-      <h1>Device: {!currentDevice ? '' : currentDevice.serial}</h1>
-      <Button
-        onClick={
-          bluetoothState.connected
-            ? bluetoothState.disconnect
-            : bluetoothState.connect
-        }
-        variant="secondary"
-      >
-        {bluetoothState.connected ? 'Disconnect' : 'Connect'}
-      </Button>
-      <Button
-        onClick={() => {
-          const toPost = post(
-            RequestStatusMessage.createWithMessage([
-              Messages.ATTRIBUTE_COLOR_THEME,
-              Messages.ATTRIBUTE_BRIGHTNESS,
-              Messages.ATTRIBUTE_HAPTIC_MODE,
-            ]),
-            currentDevice,
-          );
-          void bluetoothState.writeToMainService(toPost.packet);
-        }}
-        variant="secondary"
-      >
-        Update stats
-      </Button>
+      <HeaterStatus heaterStatus={state.heatingState} />
+      <div className="space-y-2">
+        <div className="flex items-baseline justify-between">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Temperature
+          </p>
+          <p className="text-sm font-medium">
+            {state.heaterSetPointTemperature > 0
+              ? formatTemperature(state.heaterSetPointTemperature, unit)
+              : '—'}
+          </p>
+        </div>
+        <Slider
+          disabled={!bluetoothState.connected}
+          min={Math.round(convertFromCelsius(DEVICE_TEMP_MIN_C, unit))}
+          max={Math.round(convertFromCelsius(DEVICE_TEMP_MAX_C, unit))}
+          step={1}
+          value={[
+            Math.round(
+              convertFromCelsius(
+                state.heaterSetPointTemperature || DEVICE_TEMP_MIN_C,
+                unit,
+              ),
+            ),
+          ]}
+          onValueChange={value => {
+            actions.setHeaterSetPointTemperature(
+              clampDeviceTemperatureC(convertToCelsius(value[0], unit)),
+            );
+          }}
+          onValueCommit={value => {
+            const celsius = clampDeviceTemperatureC(
+              convertToCelsius(value[0], unit),
+            );
+            actions.setHeaterSetPointTemperature(celsius);
+            const toPost = post(
+              HeaterSetPointMessage.createWithTemperature(celsius),
+              currentDevice,
+            );
+            void bluetoothState.writeToMainService(toPost.packet);
+          }}
+        />
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Brightness
+        </p>
+        <Slider
+          disabled={!bluetoothState.connected}
+          max={1}
+          step={0.1}
+          value={state.brightness ? [state.brightness] : [0]}
+          onValueChange={value => {
+            actions.setBrightness(value[0]);
+          }}
+          onValueCommit={value => {
+            const toPost = post(
+              BrightnessMessage.createWithBrightness(value[0]),
+              currentDevice,
+            );
+            void bluetoothState.writeToMainService(toPost.packet);
+          }}
+        />
+      </div>
+      <div className="space-y-2">
+        <div>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Vibration
+          </p>
+          <p className="text-xs text-neutral-400 dark:text-neutral-500">
+            How hard the Pax buzzes when it is ready or you take a hit
+          </p>
+        </div>
+        <Slider
+          disabled={!bluetoothState.connected}
+          max={1}
+          step={0.1}
+          value={state.haptics ? [state.haptics] : [0]}
+          onValueChange={value => {
+            actions.setHaptics(value[0]);
+          }}
+          onValueCommit={value => {
+            const toPost = post(
+              HapticsMessage.createWithHaptics(value[0]),
+              currentDevice,
+            );
+            void bluetoothState.writeToMainService(toPost.packet);
+          }}
+        />
+      </div>
       <ThemePicker
         loading={!bluetoothState.connected}
         colorThemes={hardcodedThemes}
@@ -192,6 +253,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
             });
         }}
       />
+      <Button onClick={bluetoothState.disconnect} variant="secondary">
+        Disconnect
+      </Button>
     </div>
   );
 };

@@ -1,10 +1,12 @@
+import { TemperatureUnit, formatTemperature } from '@/utils/temperature';
+
 import { CircularProgressBar } from './ui/progress-bar';
 
 interface TemperatureProgressProps {
   connected: boolean;
   heaterSetPointTemperature: number;
   actualTemperature: number;
-  unit: 'C' | 'F';
+  unit: TemperatureUnit;
   minTemperature?: number;
   maxTemperature?: number;
 }
@@ -37,10 +39,17 @@ const TemperatureProgress = ({
   }
 
   return (
-    <CircularProgressBar
-      percentage={percentage}
-      label={`${Math.round(actualTemperature)}°${unit}`}
-    />
+    <div className="flex flex-col items-center gap-2">
+      <CircularProgressBar
+        percentage={percentage}
+        label={formatTemperature(actualTemperature, unit)}
+      />
+      {heaterSetPointTemperature > 0 ? (
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Set {formatTemperature(heaterSetPointTemperature, unit)}
+        </p>
+      ) : null}
+    </div>
   );
 };
 
