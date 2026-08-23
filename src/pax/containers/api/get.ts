@@ -4,6 +4,7 @@ import {
   ActualTemperatureMessage,
   BatteryPercentageMessage,
   BrightnessMessage,
+  DynamicModeMessage,
   HapticsMessage,
   HeaterSetPointMessage,
   HeatingStateMessage,
@@ -45,6 +46,8 @@ export const decodeDecryptedPacket = (
       return HapticsMessage.createWithPacket(packet);
     case Messages.ATTRIBUTE_SHELL_COLOR:
       return new ShellColorMessage(packet);
+    case Messages.ATTRIBUTE_DYNAMIC_MODE:
+      return DynamicModeMessage.createWithPacket(packet);
     default:
       return new UnknownMessage(messageType, packet);
   }

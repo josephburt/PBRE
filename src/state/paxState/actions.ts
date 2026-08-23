@@ -9,6 +9,7 @@ export type PaxActions =
   | { type: 'SET_BRIGHTNESS'; payload: number }
   | { type: 'SET_HAPTICS'; payload: number }
   | { type: 'SET_SHELL_COLOR'; payload: Pax.lib.ShellColors }
+  | { type: 'SET_DYNAMIC_MODE'; payload: Pax.lib.DynamicModes }
   | { type: 'RESET_PAX_STATE' };
 
 export interface BuiltPaxActions {
@@ -20,6 +21,7 @@ export interface BuiltPaxActions {
   setBrightness: (brightness: number) => void;
   setHaptics: (haptics: number) => void;
   setShellColor: (color: Pax.lib.ShellColors) => void;
+  setDynamicMode: (mode: Pax.lib.DynamicModes) => void;
   resetPaxState: () => void;
 }
 
@@ -83,6 +85,13 @@ export const setShellColor = (
   dispatch({ type: 'SET_SHELL_COLOR', payload: color });
 };
 
+export const setDynamicMode = (
+  dispatch: React.Dispatch<PaxActions>,
+  mode: Pax.lib.DynamicModes,
+) => {
+  dispatch({ type: 'SET_DYNAMIC_MODE', payload: mode });
+};
+
 export const buildActions = (
   dispatch: React.Dispatch<PaxActions>,
 ): BuiltPaxActions => {
@@ -102,5 +111,7 @@ export const buildActions = (
     setHaptics: (haptics: number) => setHaptics(dispatch, haptics),
     setShellColor: (color: Pax.lib.ShellColors) =>
       setShellColor(dispatch, color),
+    setDynamicMode: (mode: Pax.lib.DynamicModes) =>
+      setDynamicMode(dispatch, mode),
   };
 };

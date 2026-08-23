@@ -1,3 +1,4 @@
+import { DynamicModePicker } from '@/components/DynamicModePicker';
 import { usePaxBluetoothServices, useTemperatureUnit } from '@/hooks';
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
@@ -6,12 +7,13 @@ import {
   BatteryPercentageMessage,
   BrightnessMessage,
   ColorThemeMessage,
+  DynamicModeMessage,
   HapticsMessage,
   HeaterSetPointMessage,
   RequestStatusMessage,
   ShellColorMessage,
 } from '@/pax/core/messages';
-import { Messages } from '@/pax/shared/enums';
+import { DynamicModes, Messages } from '@/pax/shared/enums';
 import { ColorTheme } from '@/pax/shared/types';
 import { usePaxContext } from '@/state/hooks';
 import { getShellColorInfo } from '@/utils/shellColor';
@@ -49,6 +51,7 @@ const STATUS_ATTRIBUTES = [
   Messages.ATTRIBUTE_BRIGHTNESS,
   Messages.ATTRIBUTE_HAPTIC_MODE,
   Messages.ATTRIBUTE_SHELL_COLOR,
+  Messages.ATTRIBUTE_DYNAMIC_MODE,
 ];
 
 export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
@@ -91,6 +94,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof ShellColorMessage) {
           actions.setShellColor(message.color);
+        }
+        if (message instanceof DynamicModeMessage) {
+          actions.setDynamicMode(message.mode);
         }
       })
       .catch(e => {
@@ -210,6 +216,18 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
           }}
         />
       </div>
+      <DynamicModePicker
+        currentMode={state.dynamicMode}
+        disabled={!bluetoothState.connected}
+        onSelectMode={(mode: DynamicModes) => {
+          actions.setDynamicMode(mode);
+          const toPost = post(
+            DynamicModeMessage.createWithMode(mode),
+            currentDevice,
+          );
+          void bluetoothState.writeToMainService(toPost.packet);
+        }}
+      />
       <div className="space-y-2">
         <p className="text-sm text-neutral-500 dark:text-neutral-400">
           Brightness

@@ -17,6 +17,13 @@ Use Chrome or Edge for the demo. Web Bluetooth does not work in Safari or Firefo
 PBRE is a local remote for a Pax 3 already in your hand. It can:
 
 - Connect over Bluetooth after you enter the device serial
+- Detect your physical **Shell Color** (Onyx Black, Silver, Rose Gold, Sage Teal, Burgundy) and dynamically tint the UI
+- Choose from 5 **Dynamic Heating Modes / Profiles**:
+  - **Standard**: Balanced heat and idle cooldown
+  - **Boost**: Aggressive heat ramp-up & dense vapor with minimal cooldown
+  - **Efficiency**: Auto-increases oven temperature (+1°C/min) throughout session
+  - **Stealth**: Dimmed LED petals and rapid cooldown between hits for low odor
+  - **Flavor**: Fast cooling between draws to preserve terpenes and taste
 - Show oven temperature, heating state, and battery percent
 - Set the oven temperature (Celsius by default, one click to Fahrenheit)
 - Change brightness, vibration strength, and the device color theme

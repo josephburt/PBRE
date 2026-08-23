@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   ActualTemperatureMessage,
+  DynamicModeMessage,
   HeaterSetPointMessage,
   HeatingStateMessage,
   ShellColorMessage,
@@ -82,6 +83,16 @@ describe('get.ts', () => {
         paxDecryptedPacket,
       );
       expect(response instanceof ShellColorMessage).toBe(true);
+    });
+    it('should return DynamicModeMessage when ATTRIBUTE_DYNAMIC_MODE', () => {
+      const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
+      paxDecryptedPacket.setUint8(0, 19);
+      paxDecryptedPacket.setUint8(1, 1);
+      const response = decodeDecryptedPacket(
+        Messages.ATTRIBUTE_DYNAMIC_MODE,
+        paxDecryptedPacket,
+      );
+      expect(response instanceof DynamicModeMessage).toBe(true);
     });
   });
 });

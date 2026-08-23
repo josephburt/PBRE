@@ -9,4 +9,5 @@ export interface PaxState {
   brightness?: number;
   haptics?: number;
   shellColor?: Pax.lib.ShellColors;
+  dynamicMode?: Pax.lib.DynamicModes;
 }
