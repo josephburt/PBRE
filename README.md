@@ -1,5 +1,9 @@
 # PBRE
 
+[![Pull Request CI](https://github.com/josephburt/PBRE/actions/workflows/pull-request-ci.yml/badge.svg)](https://github.com/josephburt/PBRE/actions/workflows/pull-request-ci.yml)
+[![Deploy](https://github.com/josephburt/PBRE/actions/workflows/deploy.yml/badge.svg)](https://github.com/josephburt/PBRE/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 <img src="docs/images/icon.svg" alt="PBRE icon" width="128" />
 
 **Puffing Bluetooth Re-Engineered** is an open source controller for **Pax 3** vaporizers. It talks to the device over Bluetooth from a web browser or a desktop app — no official Pax app required.
@@ -76,6 +80,12 @@ Builds land in `release/`. Unsigned Mac builds may need **Right-click → Open**
 ## Protocol
 
 Bluetooth encode/decode lives in `src/pax`. The Web Bluetooth connection is in `src/hooks/usePaxBluetoothServices/useBluetooth/useBluetooth.ts`.
+
+## Troubleshooting
+
+- **Device not showing in Bluetooth chooser**: Make sure you shake the Pax until the four petals glow blue (pairing mode). If it has connected to a phone recently, turn off Bluetooth on the phone.
+- **Web Bluetooth in Browser**: Web Bluetooth requires Chrome, Chromium, or Edge over HTTPS or `localhost`. Safari and Firefox do not support Web Bluetooth.
+- **Desktop Bluetooth Permission (macOS)**: When first launching the desktop build, macOS will prompt for Bluetooth access. Ensure it is allowed in **System Settings → Privacy & Security → Bluetooth**.
 
 ## Credits
 

@@ -97,14 +97,14 @@ export class BrightnessMessageBuilderFromValue<T extends BrightnessMessage> {
   }
 
   getBrightness(): number {
-    if (!this.brightness) {
-      throw new Error('Theme is not set');
+    if (this.brightness === undefined) {
+      throw new Error('Brightness is not set');
     }
     return this.brightness;
   }
 
   build(ctor: new (builder: BrightnessMessageBuilderFromValue<T>) => T): T {
-    if (!this.brightness) {
+    if (this.brightness === undefined) {
       throw new Error('Brightness is not set');
     }
     return new ctor(this);

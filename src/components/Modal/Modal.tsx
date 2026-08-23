@@ -18,7 +18,7 @@ import {
 export interface ModalProps {
   title?: string;
   open?: boolean;
-  onOpenChange?: () => void;
+  onOpenChange?: (open: boolean) => void;
   footer?: React.ReactNode;
   children?: React.ReactNode;
 }

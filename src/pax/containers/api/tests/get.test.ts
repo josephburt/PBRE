@@ -63,7 +63,7 @@ describe('get.ts', () => {
       );
       expect(response instanceof HeaterSetPointMessage).toBe(true);
     });
-    it('should return HeaterSetPointMessage when ATTRIBUTE_HEATING_STATE', () => {
+    it('should return HeatingStateMessage when ATTRIBUTE_HEATING_STATE', () => {
       const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
       paxDecryptedPacket.setUint8(0, 1);
       const response = decodeDecryptedPacket(

@@ -8,8 +8,8 @@ export class BatteryPercentageMessage implements MessageAbs {
   readonly packet: PaxDecryptedPacket;
 
   constructor(packet: PaxDecryptedPacket) {
-    const temperature = packet.getUint8(1);
-    this.percentage = temperature;
+    const percentage = packet.getUint8(1);
+    this.percentage = percentage;
     this.messageType = Messages.ATTRIBUTE_BATTERY;
     this.packet = packet;
   }

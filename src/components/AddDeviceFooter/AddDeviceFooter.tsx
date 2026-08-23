@@ -47,6 +47,13 @@ const AddDeviceFooter = (props: Props) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !addNewDeviceButtonDisabled(serialInput)) {
+      e.preventDefault();
+      handleAddNewDeviceButton();
+    }
+  };
+
   return (
     <>
       <div className="flex grow gap-0">
@@ -63,6 +70,7 @@ const AddDeviceFooter = (props: Props) => {
             placeholder={INPUT_PLACEHOLDER}
             onFocus={props.onFocus}
             onBlur={props.onBlur}
+            onKeyDown={handleKeyDown}
           />
         </div>
         <Button

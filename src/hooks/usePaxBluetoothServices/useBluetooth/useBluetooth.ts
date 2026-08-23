@@ -117,8 +117,8 @@ const useBluetooth = (
             await service.getCharacteristic(characteristicUUID);
 
           const toNotify = await characteristic.startNotifications();
-          toNotify.addEventListener('characteristicvaluechanged', callback),
-            setIsListenerAdded(true);
+          toNotify.addEventListener('characteristicvaluechanged', callback);
+          setIsListenerAdded(true);
         } catch (error) {
           parseErrors(error);
         }

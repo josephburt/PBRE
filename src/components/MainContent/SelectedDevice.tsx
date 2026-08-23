@@ -21,7 +21,7 @@ import {
   convertToCelsius,
   formatTemperature,
 } from '@/utils/temperature';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';

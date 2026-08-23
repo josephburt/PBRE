@@ -9,11 +9,11 @@ import { PaxAbs } from './PaxAbs';
 import { buildKey } from './key/key';
 
 export class Pax3Imp extends PaxAbs {
-  readonly ivLenght = 16;
+  readonly ivLength = 16;
 
   encrypt(packet: PaxDecryptedPacket): PaxEncryptedPacket {
     const key = buildKey(this.paxSerial.serial);
-    const iv = CryptoJS.lib.WordArray.random(this.ivLenght);
+    const iv = CryptoJS.lib.WordArray.random(this.ivLength);
     const WaPacket = CryptoJS.enc.Hex.parse(packet.toHex());
     const result = this.encryptAESOFB(WaPacket, key, iv);
 

@@ -11,7 +11,7 @@ export interface IThemePickerProps {
 }
 
 export function ThemePicker(props: IThemePickerProps) {
-  if (props.loading ?? !props.colorThemes) {
+  if (props.loading === true || !props.colorThemes) {
     return (
       <div className="flex w-full animate-pulse flex-row justify-center gap-4">
         <div className="flex flex-col items-center gap-1">

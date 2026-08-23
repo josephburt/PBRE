@@ -15,10 +15,7 @@ const Navbar = () => {
 
   return (
     <>
-      <DevicesModal
-        open={isDeviceModalOpen}
-        onOpenChange={openDevicesModal as () => void}
-      />
+      <DevicesModal open={isDeviceModalOpen} onOpenChange={openDevicesModal} />
       <div
         className="mx-auto flex h-16 w-screen items-center border-b 
         border-neutral-300 bg-white px-6 dark:border-neutral-800 dark:bg-black"
@@ -33,7 +30,7 @@ const Navbar = () => {
         <div className="flex gap-3">
           <Button
             variant={deviceStore.currentDevice ? 'secondary' : 'default'}
-            onClick={openDevicesModal as () => void}
+            onClick={() => openDevicesModal(true)}
           >
             {deviceStore.currentDevice ? (
               <div className="flex flex-row place-items-center gap-3">

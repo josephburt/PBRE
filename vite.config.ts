@@ -15,4 +15,21 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          radix: [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-tooltip',
+          ],
+          crypto: ['crypto-js'],
+        },
+      },
+    },
+  },
 });

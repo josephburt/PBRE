@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup node from .nvmrc
         uses: actions/setup-node@v4
         with:
@@ -31,6 +31,8 @@ jobs:
         run: pnpm i --no-frozen-lockfile
       - name: Run ESLint and Prettier
         run: pnpm run lint
+      - name: Run unit tests
+        run: pnpm test
       - name: Build project
         run: pnpm run build:pages
       - name: Upload artifact

@@ -10,7 +10,7 @@ import { SUPPORTED_DEVICES } from './constants';
 
 export interface DevicesModalProps {
   open: boolean;
-  onOpenChange: () => void;
+  onOpenChange: (open: boolean) => void;
 }
 
 const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
@@ -30,8 +30,17 @@ const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
     return (
       <div className="grid min-h-[175px] grid-cols-1 gap-5 md:grid-cols-2">
         {deviceStore.store.length === 0 ? (
-          <div className="flex justify-center">
-            <TriangleAlert size={175} opacity={0.3} />
+          <div
+            className="col-span-full flex flex-col items-center justify-center 
+            gap-2 py-6 text-center"
+          >
+            <TriangleAlert className="h-12 w-12 opacity-50 dark:text-neutral-500" />
+            <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
+              No devices saved yet
+            </p>
+            <p className="text-xs text-neutral-400 dark:text-neutral-500">
+              Add your 8-digit serial number below to connect your Pax 3.
+            </p>
           </div>
         ) : (
           renderCards()
