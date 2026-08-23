@@ -27,7 +27,7 @@ It runs in two ways:
 | | How you use it |
 |---|---|
 | **Web app** | Open the [live demo](https://pbre.burtlabs.org/) or run it locally |
-| **Desktop app** | Standalone Mac, Windows, and Linux builds (Electron + Chromium) |
+| **Desktop app** | Download standalone installers for [macOS, Windows, and Linux](https://github.com/josephburt/PBRE/releases/latest) |
 
 Writes (temperature, lights, vibration) work on macOS. Other operating systems can usually read device state; changing settings may be limited by the OS Bluetooth stack.
 
