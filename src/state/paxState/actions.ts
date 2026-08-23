@@ -8,6 +8,7 @@ export type PaxActions =
   | { type: 'SET_BATTERY_PERCENTAGE'; payload: number }
   | { type: 'SET_BRIGHTNESS'; payload: number }
   | { type: 'SET_HAPTICS'; payload: number }
+  | { type: 'SET_SHELL_COLOR'; payload: Pax.lib.ShellColors }
   | { type: 'RESET_PAX_STATE' };
 
 export interface BuiltPaxActions {
@@ -18,6 +19,7 @@ export interface BuiltPaxActions {
   setBatteryPercentage: (percentage: number) => void;
   setBrightness: (brightness: number) => void;
   setHaptics: (haptics: number) => void;
+  setShellColor: (color: Pax.lib.ShellColors) => void;
   resetPaxState: () => void;
 }
 
@@ -74,6 +76,13 @@ export const setHaptics = (
   dispatch({ type: 'SET_HAPTICS', payload: haptics });
 };
 
+export const setShellColor = (
+  dispatch: React.Dispatch<PaxActions>,
+  color: Pax.lib.ShellColors,
+) => {
+  dispatch({ type: 'SET_SHELL_COLOR', payload: color });
+};
+
 export const buildActions = (
   dispatch: React.Dispatch<PaxActions>,
 ): BuiltPaxActions => {
@@ -91,5 +100,7 @@ export const buildActions = (
     resetPaxState: () => resetPaxState(dispatch),
     setBrightness: (brightness: number) => setBrightness(dispatch, brightness),
     setHaptics: (haptics: number) => setHaptics(dispatch, haptics),
+    setShellColor: (color: Pax.lib.ShellColors) =>
+      setShellColor(dispatch, color),
   };
 };

@@ -11,3 +11,4 @@ export * from './BatteryPercentageMessage';
 export * from './BrightnessMessage';
 export * from './RequestStatusMessage';
 export * from './HapticsMessage';
+export * from './ShellColorMessage';

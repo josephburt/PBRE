@@ -8,4 +8,5 @@ export interface PaxState {
   batteryPercentage?: number;
   brightness?: number;
   haptics?: number;
+  shellColor?: Pax.lib.ShellColors;
 }

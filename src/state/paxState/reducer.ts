@@ -27,6 +27,8 @@ const reducer = (state: PaxState, action: PaxActions): PaxState => {
       return { ...state, brightness: action.payload };
     case 'SET_HAPTICS':
       return { ...state, haptics: action.payload };
+    case 'SET_SHELL_COLOR':
+      return { ...state, shellColor: action.payload };
     case 'RESET_PAX_STATE':
       return initialPaxState;
     default:

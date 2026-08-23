@@ -8,6 +8,7 @@ import {
   HeaterSetPointMessage,
   HeatingStateMessage,
   MessageAbs,
+  ShellColorMessage,
   TargetTemperatureMessage,
 } from '../../core/messages';
 import { UnknownMessage } from '../../core/messages/UnknownMessage';
@@ -42,6 +43,8 @@ export const decodeDecryptedPacket = (
       return BrightnessMessage.createWithPacket(packet);
     case Messages.ATTRIBUTE_HAPTIC_MODE:
       return HapticsMessage.createWithPacket(packet);
+    case Messages.ATTRIBUTE_SHELL_COLOR:
+      return new ShellColorMessage(packet);
     default:
       return new UnknownMessage(messageType, packet);
   }

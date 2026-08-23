@@ -2,7 +2,9 @@ import { PaxPairing } from '@/components/Graphics';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks';
+import { usePaxContext } from '@/state/hooks';
 import { DesktopBluetoothDevice } from '@/types';
+import { getShellColorInfo } from '@/utils/shellColor';
 import { BluetoothIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -11,10 +13,12 @@ export interface IConnectProps {
 }
 
 export function Connect(props: IConnectProps) {
+  const { state } = usePaxContext();
   const isMobile = useIsMobile();
   const isDesktop = Boolean(window.pbreDesktop);
   const [devices, setDevices] = useState<DesktopBluetoothDevice[]>([]);
   const [scanning, setScanning] = useState(false);
+  const shellInfo = getShellColorInfo(state.shellColor);
 
   useEffect(() => {
     if (!window.pbreDesktop) {
@@ -47,6 +51,7 @@ export function Connect(props: IConnectProps) {
         parallax={!isMobile}
         pulsatingLightSpeed={'slow'}
         pairingAnimation
+        fillColor={shellInfo?.fillColor}
       />
 
       <Button

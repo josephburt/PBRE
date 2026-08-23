@@ -4,3 +4,4 @@ export * from '../../shared/enums/Devices';
 export * from '../../shared/models/Packet';
 export * from '../../shared/types';
 export * from '../../shared/enums/HeatingStates';
+export * from '../../shared/enums/ShellColors';

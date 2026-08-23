@@ -4,6 +4,7 @@ import {
   ActualTemperatureMessage,
   HeaterSetPointMessage,
   HeatingStateMessage,
+  ShellColorMessage,
   TargetTemperatureMessage,
 } from '../../../core/messages';
 import { Devices, Messages } from '../../../shared/enums';
@@ -71,6 +72,16 @@ describe('get.ts', () => {
         paxDecryptedPacket,
       );
       expect(response instanceof HeatingStateMessage).toBe(true);
+    });
+    it('should return ShellColorMessage when ATTRIBUTE_SHELL_COLOR', () => {
+      const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
+      paxDecryptedPacket.setUint8(0, 28);
+      paxDecryptedPacket.setUint8(1, 0);
+      const response = decodeDecryptedPacket(
+        Messages.ATTRIBUTE_SHELL_COLOR,
+        paxDecryptedPacket,
+      );
+      expect(response instanceof ShellColorMessage).toBe(true);
     });
   });
 });

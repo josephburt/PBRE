@@ -7,11 +7,12 @@ interface Props {
   parallax?: boolean;
   pulsatingLightSpeed?: 'slow' | 'normal' | 'fast';
   pairingAnimation?: boolean;
+  fillColor?: string;
 }
 
 const PaxPairing = (props: Props) => {
-  const { pairingAnimation = false } = props;
-  const svgFillColor = '#666666';
+  const { pairingAnimation = false, fillColor } = props;
+  const svgFillColor = fillColor ?? '#666666';
   const lightColor = '#00FFFF';
 
   const renderWithParallax = (

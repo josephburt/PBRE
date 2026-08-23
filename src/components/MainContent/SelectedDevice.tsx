@@ -9,10 +9,12 @@ import {
   HapticsMessage,
   HeaterSetPointMessage,
   RequestStatusMessage,
+  ShellColorMessage,
 } from '@/pax/core/messages';
 import { Messages } from '@/pax/shared/enums';
 import { ColorTheme } from '@/pax/shared/types';
 import { usePaxContext } from '@/state/hooks';
+import { getShellColorInfo } from '@/utils/shellColor';
 import {
   DEVICE_TEMP_MAX_C,
   DEVICE_TEMP_MIN_C,
@@ -46,12 +48,14 @@ const STATUS_ATTRIBUTES = [
   Messages.ATTRIBUTE_COLOR_THEME,
   Messages.ATTRIBUTE_BRIGHTNESS,
   Messages.ATTRIBUTE_HAPTIC_MODE,
+  Messages.ATTRIBUTE_SHELL_COLOR,
 ];
 
 export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
   const { state, actions } = usePaxContext();
   const { unit } = useTemperatureUnit();
   const bluetoothState = usePaxBluetoothServices(currentDevice);
+  const shellInfo = getShellColorInfo(state.shellColor);
 
   const messagesConsumer = useCallback(() => {
     if (!bluetoothState.connected) {
@@ -84,6 +88,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof HapticsMessage) {
           actions.setHaptics(message.percentage);
+        }
+        if (message instanceof ShellColorMessage) {
+          actions.setShellColor(message.color);
         }
       })
       .catch(e => {
@@ -133,6 +140,27 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-6 self-center">
+      <div className="flex items-center justify-between px-1">
+        <div className="flex items-center gap-2">
+          {shellInfo ? (
+            <span
+              className="inline-block h-3.5 w-3.5 rounded-full border border-black/20 
+              shadow-sm dark:border-white/20"
+              style={{ backgroundColor: shellInfo.fillColor }}
+            />
+          ) : null}
+          <span
+            className="text-xs font-semibold uppercase tracking-wider text-neutral-500 
+            dark:text-neutral-400"
+          >
+            {currentDevice.device}
+            {shellInfo ? ` · ${shellInfo.name}` : ''}
+          </span>
+        </div>
+        <span className="font-mono text-xs text-neutral-400 dark:text-neutral-500">
+          {currentDevice.serial}
+        </span>
+      </div>
       <TemperatureProgress
         connected={bluetoothState.connected}
         heaterSetPointTemperature={state.heaterSetPointTemperature}
